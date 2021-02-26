@@ -6,7 +6,7 @@ import "taro-ui/dist/style/components/button.scss" // 按需引入
 import "taro-ui/dist/style/components/input.scss" // 按需引入
 import './style.less'
 
-export default class Login extends Component {
+export default class Register extends Component {
 
   constructor() {
     super(...arguments)

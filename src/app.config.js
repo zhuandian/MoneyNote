@@ -3,6 +3,7 @@ export default {
     'pages/index/index',
     'pages/login/login',
     'pages/register/index',
+    'pages/tab/main'
   ],
   window: {
     backgroundTextStyle: 'light',
