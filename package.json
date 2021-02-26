@@ -43,6 +43,7 @@
     "@tarojs/react": "3.0.26",
     "@tarojs/runtime": "3.0.26",
     "@tarojs/taro": "3.0.26",
+    "antd-mobile": "^2.3.4",
     "hydrogen-js-sdk": "^2.2.4",
     "lodash": "4.17.15",
     "react": "^16.10.0",

@@ -2,7 +2,6 @@ import Taro from '@tarojs/taro'
 import React, {Component} from 'react'
 import {View, Text, Input} from '@tarojs/components'
 import {AtButton, AtInput} from 'taro-ui'
-
 import "taro-ui/dist/style/components/button.scss" // 按需引入
 import "taro-ui/dist/style/components/input.scss" // 按需引入
 import './style.less'
@@ -14,6 +13,7 @@ export default class Login extends Component {
     this.state = {
       username: '',
       password: '',
+      phone: ''
     }
   }
 
@@ -32,35 +32,42 @@ export default class Login extends Component {
 
   }
 
+  handlePhoneChange(value) {
+    this.setState({
+      phone: value
+    })
+
+  }
+
   handleClick() {
     var password = this.state.password
     var username = this.state.username
+    var phone = this.state.phone
 
-
+    let params = {
+      username: username,
+      password: password,
+      phone: phone,
+    }
     if (username.length < 6 || password.length < 6) {
       Taro.showToast({
         icon: 'none',
         title: '账号或密码长度不正确'
       })
     } else {
-      Bmob.User.login(username, password).then(res => {
-        console.log(res)
-
-        Taro.showLoading({
-          title: '登录中...',
+      Bmob.User.register(params).then(res => {
+        // console.log(res)
+        Taro.showToast({
+          icon: 'none',
+          title: '注册成功'
         })
-        setTimeout(function () {
-          Taro.hideLoading()
-          Taro.redirectTo({
-            url: '/pages/login/login'
-          })
-        }, 2000)
-
-
+        Taro.redirectTo({
+          url: '/pages/login/login'
+        })
       }).catch(err => {
         Taro.showToast({
           icon: 'none',
-          title: err.error
+          title: err.message
         })
         console.log(err)
       });
@@ -90,7 +97,16 @@ export default class Login extends Component {
           value={this.state.password}
           onChange={this.handlePasswordChange.bind(this)}
         />
-        <AtButton type='primary' onClick={() => this.handleClick()}>登 录</AtButton>
+        <AtInput
+          id='password'
+          name='value'
+          title='手机号'
+          type='text'
+          placeholder='请输入手机号'
+          value={this.state.phone}
+          onChange={this.handlePhoneChange.bind(this)}
+        />
+        <AtButton type='primary' onClick={() => this.handleClick()}>注 册</AtButton>
       </View>
     )
   }
