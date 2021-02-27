@@ -1,5 +1,6 @@
 import Taro from '@tarojs/taro'
 import React, {Component} from 'react'
+// eslint-disable-next-line no-unused-vars
 import {Text, View, Image} from "@tarojs/components";
 import "taro-ui/dist/style/components/tab-bar.scss" // 按需引入
 import './style.less'
@@ -14,7 +15,7 @@ export default class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pagesIndex: 0,
+      pagesIndex: 1,
       pages: [<Home/>, <Data/>, <My/>]
     }
 
@@ -23,7 +24,7 @@ export default class Main extends Component {
 
   selectIndex(index) {
     this.setState({
-      pagesIndex:index
+      pagesIndex: index
     })
   }
 
@@ -38,10 +39,10 @@ export default class Main extends Component {
 
         <View id='bottom-view'>
 
-          <View  className='bottom-item' onClick={() => this.selectIndex(0)}>
+          <View className='bottom-item' onClick={() => this.selectIndex(0)}>
             {/*<Image src={icKb}></Image>*/}
             <Text>
-              1
+              首页
             </Text>
           </View>
 
@@ -49,7 +50,7 @@ export default class Main extends Component {
             {/*<Image src={icKb}></Image>*/}
 
             <Text>
-              2
+              记账
             </Text>
           </View>
 
@@ -57,7 +58,7 @@ export default class Main extends Component {
             {/*<Image src={icKb}></Image>*/}
 
             <Text>
-              3
+              我的
             </Text>
           </View>
         </View>
