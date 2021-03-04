@@ -52,7 +52,7 @@ export default class Login extends Component {
         setTimeout(function () {
           Taro.hideLoading()
           Taro.redirectTo({
-            url: '/pages/login/login'
+            url: '/pages/tab/main'
           })
         }, 2000)
 
@@ -70,7 +70,7 @@ export default class Login extends Component {
 
   render() {
     return (
-      <View className='index'>
+      <View className='login-root'>
 
         <AtInput
           id='username'
@@ -90,7 +90,11 @@ export default class Login extends Component {
           value={this.state.password}
           onChange={this.handlePasswordChange.bind(this)}
         />
-        <AtButton type='primary' onClick={() => this.handleClick()}>登 录</AtButton>
+        <Text id='btn-login' onClick={() => this.handleClick()}>登 录</Text>
+
+        <Text id='btn-go-register' onClick={() => {
+          Taro.navigateTo({url: '/pages/register/index'})
+        }}>去注册？</Text>
       </View>
     )
   }
