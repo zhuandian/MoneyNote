@@ -15,7 +15,7 @@ export default class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pagesIndex: 1,
+      pagesIndex: 0,
       pages: [<Home/>, <Data/>, <My/>]
     }
 

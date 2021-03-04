@@ -58,7 +58,7 @@ export default class Data extends Component {
       })
     } else {
 
-      const query = Bmob.Query('CostEntity');
+      let query = Bmob.Query('CostEntity');
       query.set("number",number)
       query.set("moneyType",moneyType)
       query.set("costType",costType)
@@ -85,6 +85,14 @@ export default class Data extends Component {
     }
   }
 
+  /**
+   *
+   * moneyType  0 收入  1，支出
+   *
+   * costType
+   * 0 日常消费  1。人情往来  2 工资  3 交通出行
+   *
+   */
   render() {
     let {moneyType, costType} = this.state
     return (
