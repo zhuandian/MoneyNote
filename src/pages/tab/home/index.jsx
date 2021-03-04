@@ -1,4 +1,4 @@
-import Taro from '@tarojs/taro'
+import Taro, {Events} from '@tarojs/taro'
 import React, {Component} from 'react'
 import {Text, View, Image} from "@tarojs/components";
 import "taro-ui/dist/style/components/tab-bar.scss" // 按需引入
@@ -61,6 +61,15 @@ export default class Home extends Component {
     return typeInfo
   }
 
+
+  goDetailPage(item) {
+    Taro.navigateTo({
+      url: '/pages/tab/data/detail/index?id='+item.objectId
+    })
+
+
+  }
+
   render() {
     let {costArray, current} = this.state
     const tabList = [{title: '收入'}, {title: '支出'}]
@@ -70,7 +79,7 @@ export default class Home extends Component {
           <AtTabsPane current={this.state.current} index={0}>
             {
               ((costArray).filter(item => item.moneyType == 0) || []).map((item, index) => {
-                return <View id='view-shouru'>
+                return <View id='view-shouru' onClick={() => this.goDetailPage(item)}>
                   <Text id='home-item-title'>支出</Text>
                   <Text id='item-money-count'>金额 : {item.number}</Text>
                   <View id='item-bottom-view'>
@@ -85,7 +94,7 @@ export default class Home extends Component {
           <AtTabsPane current={this.state.current} index={1}>
             {
               ((costArray).filter(item => item.moneyType == 1) || []).map((item, index) => {
-                return <View id='view-shouru'>
+                return <View id='view-shouru' onClick={() => this.goDetailPage(item)}>
                   <Text id='home-item-title'>收入</Text>
                   <Text id='item-money-count'>金额 : {item.number}</Text>
                   <View id='item-bottom-view'>
