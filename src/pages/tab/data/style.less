@@ -4,36 +4,70 @@
   margin: 10px 20px;
 
   .title-data {
-    margin-top: 20px;
+    margin: 20px;
     font-size: .8rem;
   }
 
-  .type-view {
-
+  .money-type-view {
     display: flex;
-    flex-direction: row;
-    justify-content: start;
-    flex-wrap: wrap;
 
     .type-item-selected {
       text-align: center;
       padding: 10px 20px;
       width: 180px;
       border: 1px solid #ec210d;
-      font-size: .7rem;
+      font-size: .6rem;
       margin: 5px;
     }
+
     .type-item-normal {
       text-align: center;
       padding: 10px 20px;
       background: #F6F6F6;
       width: 180px;
-      font-size: .7rem;
+      font-size: .6rem;
       margin: 5px;
     }
+
   }
 
-  #item-space{
+
+  .cost-type-view {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    flex-wrap: wrap;
+    font-size: .6rem;
+
+    .item-view {
+      margin-top: 10px;
+      width: 130px;
+      display: flex;
+      flex-direction: column;
+
+      #meun-img {
+        height: 50px;
+        width: 50px;
+        margin-right: auto;
+        margin-left: auto;
+      }
+
+      .type-item-selected {
+        color: dodgerblue;
+        text-align: center;
+        padding: 10px 20px;
+      }
+
+      .type-item-normal {
+        text-align: center;
+        padding: 10px 20px;
+
+      }
+    }
+
+  }
+
+  #item-space {
     height: 50px;
   }
 
