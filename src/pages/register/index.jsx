@@ -81,7 +81,7 @@ export default class Register extends Component {
 
         <AtInput
           id='username'
-          name='value'
+          name='username'
           title='账号'
           type='text'
           placeholder='请输入账号'
@@ -90,7 +90,7 @@ export default class Register extends Component {
         />
         <AtInput
           id='password'
-          name='value'
+          name='password'
           title='密码'
           type='password'
           placeholder='请输入密码'
@@ -98,8 +98,8 @@ export default class Register extends Component {
           onChange={this.handlePasswordChange.bind(this)}
         />
         <AtInput
-          id='password'
-          name='value'
+          id='phone'
+          name='phone'
           title='手机号'
           type='text'
           placeholder='请输入手机号'

@@ -26,6 +26,7 @@
 			"disablePlugins": [],
 			"outputPath": ""
 		},
+		"bundle": false,
 		"useIsolateContext": true,
 		"useCompilerModule": false,
 		"userConfirmedUseCompilerModuleSwitch": false,
@@ -33,7 +34,6 @@
 		"useApiHook": true,
 		"useApiHostProcess": false,
 		"enableEngineNative": false,
-		"bundle": false,
 		"userConfirmedBundleSwitch": false,
 		"packNpmManually": false,
 		"packNpmRelationList": [],

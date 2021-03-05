@@ -11,8 +11,13 @@ export default class My extends Component {
     return (
       <View id='my-view-root'>
 
-
         <Text id = 'app-title'>keeping记账系统</Text>
+        <View id='my-item-view' onClick={()=>{
+          Taro.navigateTo({url:'/pages/tab/bill/index'})
+        }}>
+          <Text>账单统计</Text>
+          <Text> > </Text>
+        </View>
         <View id='my-item-view'>
           <Text>修改密码</Text>
           <Text> > </Text>

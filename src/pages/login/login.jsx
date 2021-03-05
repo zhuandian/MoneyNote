@@ -17,17 +17,17 @@ export default class Login extends Component {
     }
   }
 
-  handleUserNameChange(value) {
+  handleUserNameChange(username) {
     this.setState({
-      username: value
+      username: username
     })
     // // 在小程序中，如果想改变 value 的值，需要 `return value` 从而改变输入框的当前值
     // return value
   }
 
-  handlePasswordChange(value) {
+  handlePasswordChange(password) {
     this.setState({
-      password: value
+      password: password
     })
 
   }
@@ -74,7 +74,7 @@ export default class Login extends Component {
 
         <AtInput
           id='username'
-          name='value'
+          name='username'
           title='账号'
           type='text'
           placeholder='请输入账号'
@@ -83,7 +83,7 @@ export default class Login extends Component {
         />
         <AtInput
           id='password'
-          name='value'
+          name='password'
           title='密码'
           type='password'
           placeholder='请输入密码'
