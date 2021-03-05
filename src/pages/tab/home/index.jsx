@@ -39,11 +39,16 @@ export default class Home extends Component {
     let query = Bmob.Query('CostEntity');
     query.find().then(res => {
       console.log(res)
+
+
+      let grouped = this.groupBy(res, item => item.createdAt.split(" ")[0])
+
       this.setState({
-        costArray: res
+        costArray: grouped
       })
     });
   }
+
 
   /**
    *
@@ -169,25 +174,44 @@ export default class Home extends Component {
     return img
   }
 
-  render() {
 
+  groupBy(array, fn) {
+    let groups = {}
+
+    array.forEach(o => {
+      let group = JSON.stringify(fn(o))
+      groups[group] = groups[group] || []
+      groups[group].push(o)
+    })
+
+    return Object.keys(groups).map(group => groups[group])
+  }
+
+  render() {
 
     let {costArray} = this.state
 
     return (
       <View id='home-root'>
         {
-          (costArray || []).map((item, index) => {
-            return <View id='view-shouru' onClick={() => this.goDetailPage(item)}>
-              <View id='item-content-view'>
-                <Image id='shouru-item-icon' src={this.getImgType(item.costType)}/>
-                <Text id='home-item-title'>{this.getCostType(item.costType)}</Text>
-                <Text
-                  id={item.moneyType == 0 ? 'item-money-count-shouru' : 'item-money-count-zhichu'}>{item.number}</Text>
-              </View>
+          (costArray || []).map((array, index) => {
+            return <View>
+              <Text>{array[0].createdAt.split(" ")[0]}</Text>
+              {
+                (array || []).map((item, index) => {
+                  return <View id='view-shouru' onClick={() => this.goDetailPage(item)}>
+                    <View id='item-content-view'>
+                      <Image id='shouru-item-icon' src={this.getImgType(item.costType)}/>
+                      <Text id='home-item-title'>{this.getCostType(item.costType)}</Text>
+                      <Text
+                        id={item.moneyType == 0 ? 'item-money-count-shouru' : 'item-money-count-zhichu'}>{item.number}</Text>
+                    </View>
 
-              <View id='item-bottom-view'/>
+                    <View id='item-bottom-view'/>
 
+                  </View>
+                })
+              }
             </View>
           })
         }
