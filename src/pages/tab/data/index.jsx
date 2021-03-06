@@ -71,7 +71,7 @@ export default class Data extends Component {
   onMoneyTypeSelected(value) {
     this.setState({
       moneyType: value,
-      costType: value == 0 ? 0 : 10
+      costType: value == 0 ? 0 : 8
     })
   }
 
@@ -119,14 +119,14 @@ export default class Data extends Component {
 
   /**
    *
-   * moneyType  0 收入  1，支出
+   * moneyType  0 支出  1，收入
    *
    * costType
-   * 收入
+   * 支出
    * 0 学习  1。一般  2 用餐  3 交通 4。日用品 5 娱乐 6旅游 7其他
    *
-   * 支出
-   * 10 一般 11工资  12红包 13奖金 14投资 15报销 16其他
+   * 收入
+   * 8 一般 9工资  10红包 11奖金 12投资 13报销 14其他
    *
    *
    */
@@ -146,10 +146,10 @@ export default class Data extends Component {
         />
         <Text className='title-data'>类型</Text>
         <View className='money-type-view'>
-          <Text className={moneyType == 0 ? 'type-item-selected' : 'type-item-normal'}
-                onClick={() => this.onMoneyTypeSelected(0)}>收入</Text>
           <Text className={moneyType == 1 ? 'type-item-selected' : 'type-item-normal'}
-                onClick={() => this.onMoneyTypeSelected(1)}>支出</Text>
+                onClick={() => this.onMoneyTypeSelected(1)}>收入</Text>
+          <Text className={moneyType == 0 ? 'type-item-selected' : 'type-item-normal'}
+                onClick={() => this.onMoneyTypeSelected(0)}>支出</Text>
         </View>
         <Text className='title-data'>消费类别</Text>
 
@@ -194,33 +194,33 @@ export default class Data extends Component {
             :
             <View className='cost-type-view'>
               <View className='item-view'>
-                <Image id='meun-img' src={costType == 10 ? yiban1_select : yiban1}
-                       onClick={() => this.onCostTypeSelected(10)}></Image>
-                <Text className={costType == 10 ? 'type-item-selected' : 'type-item-normal'}>一般</Text>
+                <Image id='meun-img' src={costType == 8 ? yiban1_select : yiban1}
+                       onClick={() => this.onCostTypeSelected(8)}></Image>
+                <Text className={costType == 8 ? 'type-item-selected' : 'type-item-normal'}>一般</Text>
+              </View>
+              <View className='item-view' onClick={() => this.onCostTypeSelected(9)}>
+                <Image id='meun-img' src={costType == 9 ? gongzi_select : gongzi}></Image>
+                <Text className={costType == 9 ? 'type-item-selected' : 'type-item-normal'}>工资</Text>
+              </View>
+              <View className='item-view' onClick={() => this.onCostTypeSelected(10)}>
+                <Image id='meun-img' src={costType == 10 ? hongbao_select : hongbao}></Image>
+                <Text className={costType == 10 ? 'type-item-selected' : 'type-item-normal'}>红包</Text>
               </View>
               <View className='item-view' onClick={() => this.onCostTypeSelected(11)}>
-                <Image id='meun-img' src={costType == 11 ? gongzi_select : gongzi}></Image>
-                <Text className={costType == 11 ? 'type-item-selected' : 'type-item-normal'}>工资</Text>
+                <Image id='meun-img' src={costType == 11 ? jiangjinguize_select : jiangjinguize}></Image>
+                <Text className={costType == 11 ? 'type-item-selected' : 'type-item-normal'}>奖金</Text>
               </View>
               <View className='item-view' onClick={() => this.onCostTypeSelected(12)}>
-                <Image id='meun-img' src={costType == 12 ? hongbao_select : hongbao}></Image>
-                <Text className={costType == 12 ? 'type-item-selected' : 'type-item-normal'}>红包</Text>
+                <Image id='meun-img' src={costType == 12 ? ziyuan_select : ziyuan}></Image>
+                <Text className={costType == 12 ? 'type-item-selected' : 'type-item-normal'}>投资</Text>
               </View>
               <View className='item-view' onClick={() => this.onCostTypeSelected(13)}>
-                <Image id='meun-img' src={costType == 13 ? jiangjinguize_select : jiangjinguize}></Image>
-                <Text className={costType == 13 ? 'type-item-selected' : 'type-item-normal'}>奖金</Text>
+                <Image id='meun-img' src={costType == 13 ? baoxiao_select : baoxiao}></Image>
+                <Text className={costType == 13 ? 'type-item-selected' : 'type-item-normal'}>报销</Text>
               </View>
               <View className='item-view' onClick={() => this.onCostTypeSelected(14)}>
-                <Image id='meun-img' src={costType == 14 ? ziyuan_select : ziyuan}></Image>
-                <Text className={costType == 14 ? 'type-item-selected' : 'type-item-normal'}>投资</Text>
-              </View>
-              <View className='item-view' onClick={() => this.onCostTypeSelected(15)}>
-                <Image id='meun-img' src={costType == 15 ? baoxiao_select : baoxiao}></Image>
-                <Text className={costType == 15 ? 'type-item-selected' : 'type-item-normal'}>报销</Text>
-              </View>
-              <View className='item-view' onClick={() => this.onCostTypeSelected(16)}>
-                <Image id='meun-img' src={costType == 16 ? qita_select : qita}></Image>
-                <Text className={costType == 16 ? 'type-item-selected' : 'type-item-normal'}>其他</Text>
+                <Image id='meun-img' src={costType == 14 ? qita_select : qita}></Image>
+                <Text className={costType == 14 ? 'type-item-selected' : 'type-item-normal'}>其他</Text>
               </View>
             </View>
         }

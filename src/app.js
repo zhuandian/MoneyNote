@@ -1,5 +1,6 @@
 import { Component } from 'react'
 import './app.less'
+import 'antd-mobile/dist/antd-mobile.css';
 import './utils/initBmob'
 class App extends Component {
 

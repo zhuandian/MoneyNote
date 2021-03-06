@@ -1,9 +1,10 @@
-import Taro, {Events} from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import React, {Component} from 'react'
 import {Text, View, Image} from "@tarojs/components";
-import "taro-ui/dist/style/components/tab-bar.scss" // 按需引入
+import {DatePicker, Picker} from 'antd-mobile';
+import enUs from 'antd-mobile/lib/date-picker-view/locale/en_US';
+import "taro-ui/dist/style/components/action-sheet.scss";
 import './style.less'
-import "taro-ui/dist/style/components/tabs.scss";
 import baoxiao_select from "../../../image/baoxiao_select.png";
 import gongzi_select from "../../../image/gongzi_select.png";
 import hongbao_select from "../../../image/hongbao_select.png";
@@ -19,45 +20,112 @@ import yongcan_select from "../../../image/yongcanqu_select.png";
 import yule_select from "../../../image/yule_select.png";
 import ziyuan_select from "../../../image/ziyuan_select.png";
 
+const typeList = [
+  {"label": "其他(支出)", "value": 0},
+  {"label": "学习", "value": 1},
+  {"label": "一般(支出)", "value": 2},
+  {"label": "用餐", "value": 3},
+  {"label": "交通", "value": 4},
+  {"label": "日用品", "value": 5},
+  {"label": "娱乐", "value": 6},
+  {"label": "旅游", "value": 7},
+  {"label": "一般(收入)", "value": 8},
+  {"label": "工资", "value": 9},
+  {"label": "红包", "value": 10},
+  {"label": "奖金", "value": 11},
+  {"label": "投资", "value": 12},
+  {"label": "报销", "value": 13},
+  {"label": "其他(收入)", "value": 14}
+]
 export default class Home extends Component {
 
   constructor() {
     super(...arguments)
     this.state = {
-      current: 0,
-      costArray: []
+      costType: 0,
+      costArray: [],
+      currentMonth: new Date(),
+      shouru: 0,
+      zhichu: 0,
+      showTypeDialog: false,
+      showDatePicker: false
     }
   }
 
   handleClick(value) {
     this.setState({
-      current: value
+      costType: value
     })
   }
 
   componentDidMount() {
+    this.initDate();
+  }
+
+
+  initDate() {
+    let date = this.state.currentMonth
     let query = Bmob.Query('CostEntity');
+    query.order('-createdAt');
     query.find().then(res => {
-      console.log(res)
+      let temp = res.filter(item => parseInt(item.createdAt.split(" ")[0].split('-')[1]) == date.getMonth() + 1)
 
+      let zhichu = 0;
+      let shouru = 0;
+      for (let i = 0; i < temp.length; i++) {
+        if (temp[i].moneyType == 1) {
+          shouru += temp[i].number
+        } else {
+          zhichu += temp[i].number
+        }
+      }
 
-      let grouped = this.groupBy(res, item => item.createdAt.split(" ")[0])
+      let grouped = this.groupBy(temp, item => item.createdAt.split(" ")[0])
 
       this.setState({
-        costArray: grouped
+        costArray: grouped,
+        shouru: shouru,
+        zhichu: zhichu
       })
     });
   }
 
 
-  /**
-   *
-   * moneyType  0 收入  1，支出
-   *
-   * costType
-   * 0 日常消费  1。人情往来  2 工资  3 交通出行
-   *
-   */
+  async onDateChange(date) {
+    await this.setState({currentMonth: date, showDatePicker: false})
+    this.initDate()
+  }
+
+  onTypeChange(data) {
+    this.setState({costType: data[0], showTypeDialog: false})
+    let date = this.state.currentMonth
+    let query = Bmob.Query('CostEntity');
+    query.order('-createdAt');
+    query.equalTo("costType", "==", data[0]);
+    query.find().then(res => {
+
+      // if (res.length == 0) return;
+      let temp = res.filter(item => parseInt(item.createdAt.split(" ")[0].split('-')[1]) == date.getMonth() + 1)
+
+      let zhichu = 0;
+      let shouru = 0;
+      for (let i = 0; i < temp.length; i++) {
+        if (temp[i].moneyType == 1) {
+          shouru += temp[i].number
+        } else {
+          zhichu += temp[i].number
+        }
+      }
+
+      let grouped = this.groupBy(temp, item => item.createdAt.split(" ")[0])
+      this.setState({
+        costArray: grouped,
+        shouru: shouru,
+        zhichu: zhichu
+      })
+    });
+  }
+
 
   getCostType(type) {
     let typeInfo = "其他"
@@ -86,25 +154,25 @@ export default class Home extends Component {
       case 7:
         typeInfo = "其他"
         break;
-      case 10:
+      case 8:
         typeInfo = "一般"
         break;
-      case 11:
+      case 9:
         typeInfo = "工资"
         break;
-      case 12:
+      case 10:
         typeInfo = "红包"
         break;
-      case 13:
+      case 11:
         typeInfo = "奖金"
         break;
-      case 14:
+      case 12:
         typeInfo = "投资"
         break;
-      case 15:
+      case 13:
         typeInfo = "报销"
         break;
-      case 16:
+      case 14:
         typeInfo = "其他"
         break;
     }
@@ -187,16 +255,66 @@ export default class Home extends Component {
     return Object.keys(groups).map(group => groups[group])
   }
 
+
+  getMonthMoneyInfo(array) {
+
+    let zhichu = 0;
+    let shouru = 0;
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].moneyType == 1) {
+        shouru += array[i].number
+      } else {
+        zhichu += array[i].number
+      }
+    }
+
+    return "收入" + shouru + " " + "支出" + zhichu
+  }
+
+
   render() {
 
-    let {costArray} = this.state
+    let {costArray, showTypeDialog, currentMonth, costType, shouru, zhichu} = this.state
 
     return (
       <View id='home-root'>
+
+        <View id='home-top-view'>
+          <View id='bill-type' onClick={() => this.setState({showTypeDialog: true})}>
+            <Text>{typeList[costType].label}</Text>
+            <Text>▼</Text>
+          </View>
+
+          <View id='bill-data'>
+            <View id='top-item' onClick={() => {
+              this.setState({showDatePicker: true})
+            }}>
+              <Text>{currentMonth.getFullYear()}</Text>
+              <Text>▼</Text>
+              <Text>{currentMonth.getMonth() + 1}月</Text>
+            </View>
+            <View id='top-item'>
+              <Text>月支出</Text>
+              <Text>{zhichu}</Text>
+            </View>
+            <View id='top-item'>
+              <Text>月收入</Text>
+              <Text>{shouru}</Text>
+            </View>
+            <View id='top-item'>
+              <Text>结余</Text>
+              <Text>{shouru - zhichu}</Text>
+            </View>
+
+          </View>
+        </View>
         {
           (costArray || []).map((array, index) => {
             return <View>
-              <Text>{array[0].createdAt.split(" ")[0]}</Text>
+              <View id='view-item-tilte'>
+                <Text>{array[0].createdAt.split(" ")[0]}</Text>
+                <Text>{this.getMonthMoneyInfo(array)}</Text>
+              </View>
               {
                 (array || []).map((item, index) => {
                   return <View id='view-shouru' onClick={() => this.goDetailPage(item)}>
@@ -215,7 +333,27 @@ export default class Home extends Component {
             </View>
           })
         }
+
+
+        <Picker
+          data={typeList}
+          visible={showTypeDialog}
+          cols={1}
+          onOk={data => this.onTypeChange(data)}
+          onDismiss={() => this.setState({showTypeDialog: false})}
+        />
+
+
+        <DatePicker
+          visible={this.state.showDatePicker}
+          mode="month"
+          value={this.state.currentMonth}
+          onOk={date => this.onDateChange(date)}
+          onDismiss={() => this.setState({showDatePicker: false})}
+        />
+
       </View>
+
     )
   }
 }

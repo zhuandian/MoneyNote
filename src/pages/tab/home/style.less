@@ -3,19 +3,55 @@
   flex-direction: column;
   background: #F6F6F6;
 
-  #view-shouru {
 
+  #home-top-view {
+    background: dodgerblue;
+    color: white;
+    font-size: 0.6rem;
+
+
+    #bill-type {
+      margin-top: 60px;
+      margin-left: 50px;
+      margin-bottom: 20px;
+    }
+
+    #bill-data {
+      display: flex;
+      flex-direction: row;
+      padding-bottom: 20px;
+      justify-content: space-around;
+
+      #top-item {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        justify-content: space-between;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  }
+
+  #view-item-tilte {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 0.6rem;
+    margin: 15px 20px;
+  }
+
+  #view-shouru {
     display: flex;
     background: white;
     height: 120px;
     flex-direction: column;
-    font-size: 0.7rem;
+    font-size: 0.6rem;
 
     #item-content-view {
       display: flex;
       flex-direction: row;
       align-items: center;
-
 
 
       #shouru-item-icon {
@@ -27,7 +63,7 @@
 
       #home-item-title {
         line-height: 115px;
-        font-size: 0.7rem;
+        font-size: 0.6rem;
         margin-left: 30px;
       }
 
@@ -50,6 +86,43 @@
       margin-left: 120px;
       background: #e3e3e3;
     }
+  }
 
+
+  #bottom-sheet{
+    height: 500px;
+    background: #d25164;
+  }
+
+
+  #type-picker-view {
+    position: fixed;
+    bottom: 0px;
+    display: flex;
+    width: 100%;
+    background: white;
+    flex-direction: column;
+    text-align: center;
+  }
+
+
+
+
+  #div-date-picker {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    background: white;
+
+    #btn-ok {
+      text-align: right;
+      margin-right: 50px;
+      margin-top: 10px;
+      font-size: 0.7rem;
+      color: crimson;
+      margin-bottom: 10px;
+    }
   }
 }
