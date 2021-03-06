@@ -217,25 +217,25 @@ export default class Home extends Component {
       case 7:
         img = qita_select
         break;
-      case 10:
+      case 8:
         img = yiban1_select
         break;
-      case 11:
+      case 9:
         img = gongzi_select
         break;
-      case 12:
+      case 10:
         img = hongbao_select
         break;
-      case 13:
+      case 11:
         img = jiangjinguize_select
         break;
-      case 14:
+      case 12:
         img = ziyuan_select
         break;
-      case 15:
+      case 13:
         img = baoxiao_select
         break;
-      case 16:
+      case 14:
         img = qita_select
         break;
     }

@@ -1,27 +1,74 @@
 #detail-page-root {
-
-  margin-top: 5px;
+  background: white;
   display: flex;
   background: white;
-  padding: 10px 20px;
   flex-direction: column;
   margin-left: 30px;
   font-size: 0.7rem;
+  height: 100vh;
+  padding: 20px;
 
-  #home-item-title {
-    font-size: 1.0rem;
+
+  #item-content-view {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+
+    #item-icon {
+      margin-left: 20px;
+      margin-right: 20px;
+      width: 50px;
+      height: 50px;
+    }
+
+    #item-info {
+      line-height: 100px;
+      font-size: 0.5rem;
+      margin-left: 30px;
+    }
+
+    #item-money-count-shouru {
+      color: dodgerblue;
+      margin-right: 20px;
+      margin-left: auto;
+    }
+
+    #item-money-count-zhichu {
+      margin-right: 20px;
+      margin-left: auto;
+    }
+
+
+    .item-input {
+      line-height: 100px;
+      font-size: 0.5rem;
+      margin-left: 30px;
+      background: white;
+    }
   }
 
-  #item-money-count {
-    color: #ec210d;
+
+  #item-bottom-view {
+    height: 1px;
+    margin-left: 30px;
+    background: #e3e3e3;
   }
 
+  #bottom-btn-view {
+    display: flex;
+    margin: 50px;
+    margin-top: 80px;
+    flex-direction: row;
+    justify-content: space-around;
 
-  #item-money-type {
-
-  }
-
-  #item-money-date {
+    #btn {
+      background: dodgerblue;
+      padding: 10px 60px;
+      color: white;
+      border-radius: 10px;
+      font-size: 0.6rem;
+    }
   }
 
 }
