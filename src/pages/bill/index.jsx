@@ -2,21 +2,21 @@ import React, {Component} from 'react'
 import {View, Text, Image} from '@tarojs/components'
 import './index.less'
 import {Pie} from '@ant-design/charts';
-import baoxiao_select from "../../../image/baoxiao_select.png";
-import gongzi_select from "../../../image/gongzi_select.png";
-import hongbao_select from "../../../image/hongbao_select.png";
-import jiangjinguize_select from "../../../image/jiangjinguize_select.png";
-import lvyou_select from "../../../image/lvyou_select.png";
-import qita_select from "../../../image/qita_select.png";
-import riyongpin_select from "../../../image/riyongpin_select.png";
-import traffic_select from "../../../image/traffic_select.png";
-import xuexi_select from "../../../image/xuexi_select.png";
-import yiban_select from "../../../image/yiban_select.png";
-import yiban1_select from "../../../image/yiban_1_select.png";
-import yongcan_select from "../../../image/yongcanqu_select.png";
-import yule_select from "../../../image/yule_select.png";
-import ziyuan_select from "../../../image/ziyuan_select.png";
-import {DatePicker} from "antd-mobile";
+import baoxiao_select from "../../image/baoxiao_select.png";
+import gongzi_select from "../../image/gongzi_select.png";
+import hongbao_select from "../../image/hongbao_select.png";
+import jiangjinguize_select from "../../image/jiangjinguize_select.png";
+import lvyou_select from "../../image/lvyou_select.png";
+import qita_select from "../../image/qita_select.png";
+import riyongpin_select from "../../image/riyongpin_select.png";
+import traffic_select from "../../image/traffic_select.png";
+import xuexi_select from "../../image/xuexi_select.png";
+import yiban_select from "../../image/yiban_select.png";
+import yiban1_select from "../../image/yiban_1_select.png";
+import yongcan_select from "../../image/yongcanqu_select.png";
+import yule_select from "../../image/yule_select.png";
+import ziyuan_select from "../../image/ziyuan_select.png";
+import {DatePicker} from "antd-mobile/lib";
 import Taro from "@tarojs/taro";
 
 const typeList = [
@@ -282,16 +282,16 @@ export default class Index extends Component {
 
     return Object.keys(groups).map(group => groups[group])
   }
+
   render() {
 
     let {pieConfig, currentMonth, costArray, moneyType} = this.state
-
     return (
       <View className='bill-root'>
-        <View id='top-view'>
+        <View className='bill-top-view'>
           <View id='money-type'>
-            <Text id={moneyType == 1 ? "selected" : "normal"} onClick={() => this.onMoneyTypeChange(1)}>收入</Text>
-            <Text id={moneyType == 0 ? "selected" : "normal"} onClick={() => this.onMoneyTypeChange(0)}>支出</Text>
+            <Text className={moneyType == 1 ? "selected" : "normal"} onClick={() => this.onMoneyTypeChange(1)}>收入</Text>
+            <Text className={moneyType == 0 ? "selected" : "normal"} onClick={() => this.onMoneyTypeChange(0)}>支出</Text>
           </View>
           <Text id='time' onClick={() => {
             this.setState({showDatePicker: true})
@@ -305,14 +305,14 @@ export default class Index extends Component {
         <Text id='rank-title'>{currentMonth.getMonth() + 1}月份{moneyType == 1 ? "收入" : "支出"}排行榜</Text>
         {
           (costArray || []).map((item, index) => {
-            return <View id='view-shouru' onClick={() => this.goDetailPage(item)}>
-              <View id='item-content-view'>
-                <Image id='shouru-item-icon' src={this.getImgType(item.costType)}/>
-                <Text id='home-item-title'>{this.getCostType(item.costType)}</Text>
+            return <View className='view-shouru' onClick={() => this.goDetailPage(item)}>
+              <View className='item-content-view'>
+                <Image className='shouru-item-icon' src={this.getImgType(item.costType)}/>
+                <Text className='home-item-title'>{this.getCostType(item.costType)}</Text>
                 <Text>{item.number}</Text>
               </View>
 
-              <View id='item-bottom-view'/>
+              <View className='item-bottom-view'></View>
 
             </View>
           })

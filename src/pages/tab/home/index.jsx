@@ -2,7 +2,6 @@ import Taro from '@tarojs/taro'
 import React, {Component} from 'react'
 import {Text, View, Image} from "@tarojs/components";
 import {DatePicker, Picker} from 'antd-mobile';
-import enUs from 'antd-mobile/lib/date-picker-view/locale/en_US';
 import "taro-ui/dist/style/components/action-sheet.scss";
 import './style.less'
 import baoxiao_select from "../../../image/baoxiao_select.png";
@@ -187,7 +186,7 @@ export default class Home extends Component {
 
   goDetailPage(item) {
     Taro.navigateTo({
-      url: '/pages/tab/data/detail/index?id=' + item.objectId
+      url: '/pages/detail/index?id=' + item.objectId
     })
   }
 
@@ -288,22 +287,22 @@ export default class Home extends Component {
           </View>
 
           <View id='bill-data'>
-            <View id='top-item' onClick={() => {
+            <View className='top-item' onClick={() => {
               this.setState({showDatePicker: true})
             }}>
               <Text>{currentMonth.getFullYear()}</Text>
               <Text>▼</Text>
               <Text>{currentMonth.getMonth() + 1}月</Text>
             </View>
-            <View id='top-item'>
+            <View className='top-item'>
               <Text>月支出</Text>
               <Text>{zhichu}</Text>
             </View>
-            <View id='top-item'>
+            <View className='top-item'>
               <Text>月收入</Text>
               <Text>{shouru}</Text>
             </View>
-            <View id='top-item'>
+            <View className='top-item'>
               <Text>结余</Text>
               <Text>{shouru - zhichu}</Text>
             </View>
