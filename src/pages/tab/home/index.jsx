@@ -64,9 +64,11 @@ export default class Home extends Component {
 
 
   initDate() {
+    var storageSync = Taro.getStorageSync('userEntity');
     let date = this.state.currentMonth
     let query = window.bmob.Query('CostEntity');
     query.order('-createdAt');
+    query.equalTo("userId", "==", storageSync.objectId);
     query.find().then(res => {
       let temp = res.filter(item => parseInt(item.createdAt.split(" ")[0].split('-')[1]) == date.getMonth() + 1)
 
@@ -97,11 +99,13 @@ export default class Home extends Component {
   }
 
   onTypeChange(data) {
+    var storageSync = Taro.getStorageSync('userEntity');
     this.setState({costType: data[0], showTypeDialog: false})
     let date = this.state.currentMonth
     let query = window.bmob.Query('CostEntity');
     query.order('-createdAt');
     query.equalTo("costType", "==", data[0]);
+    query.equalTo("userId", "==", storageSync.objectId);
     query.find().then(res => {
 
       // if (res.length == 0) return;

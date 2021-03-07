@@ -17,6 +17,7 @@ import yongcan_select from "../../../image/yongcanqu_select.png";
 import yule_select from "../../../image/yule_select.png";
 import ziyuan_select from "../../../image/ziyuan_select.png";
 import {DatePicker} from "antd-mobile";
+import Taro from "@tarojs/taro";
 
 const typeList = [
   {"label": "其他(支出)", "value": 0},
@@ -215,9 +216,11 @@ export default class Index extends Component {
 
   initDate() {
     let date = this.state.currentMonth
+    var storageSync = Taro.getStorageSync('userEntity');
     let query = window.bmob.Query('CostEntity');
     query.order('-createdAt');
     query.equalTo("moneyType", "==", this.state.moneyType);
+    query.equalTo("userId", "==", storageSync.objectId);
     query.find().then(res => {
       let temp = res.filter(item => parseInt(item.createdAt.split(" ")[0].split('-')[1]) == date.getMonth() + 1)
 

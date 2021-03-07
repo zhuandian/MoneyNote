@@ -90,11 +90,13 @@ export default class Data extends Component {
       })
     } else {
 
+      var storageSync = Taro.getStorageSync('userEntity');
       let query = window.bmob.Query('CostEntity');
       query.set("number", number)
       query.set("moneyType", moneyType)
       query.set("costType", costType)
       query.set("desc", desc)
+      query.set("userId", storageSync.objectId)
       query.save().then(res => {
         console.log(res)
         Taro.showToast({
