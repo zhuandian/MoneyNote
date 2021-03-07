@@ -18,15 +18,21 @@ export default class My extends Component {
           <Text>账单统计</Text>
           <Text> > </Text>
         </View>
-        <View id='my-item-view'>
+        <View id='my-item-view' onClick={()=>Taro.navigateTo({
+          url:'/pages/tab/my/resetpassword/index'
+        })}>
           <Text>修改密码</Text>
           <Text> > </Text>
         </View>
-        <View id='my-item-view'>
+        <View id='my-item-view' onClick={()=>Taro.navigateTo({
+          url:'/pages/tab/my/about/index'
+        })}>
           <Text>关于keeping记账系统</Text>
           <Text> > </Text>
         </View>
-        <View id='my-item-view'>
+        <View id='my-item-view' onClick={()=>Taro.navigateTo({
+          url:'/pages/tab/my/feedback/index'
+        })}>
           <Text>意见反馈</Text>
           <Text> > </Text>
         </View>

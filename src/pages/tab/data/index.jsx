@@ -226,7 +226,7 @@ export default class Data extends Component {
         }
 
 
-        <div id='item-space'/>
+        <View id='item-space'/>
         <AtTextarea
           id='cost-desc'
           value={this.state.desc}
@@ -234,7 +234,7 @@ export default class Data extends Component {
           maxLength={200}
           placeholder='添加备注...'
         />
-        <div id='item-space'/>
+        <View id='item-space'/>
         <AtButton type='primary' onClick={() => this.handleClick()}>记 一 笔</AtButton>
       </View>
     )

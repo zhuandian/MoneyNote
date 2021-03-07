@@ -2,40 +2,61 @@ import Taro from '@tarojs/taro'
 import React, {Component} from 'react'
 import {View, Text, Input} from '@tarojs/components'
 import {AtButton, AtInput} from 'taro-ui'
-
 import "taro-ui/dist/style/components/button.scss" // 按需引入
 import "taro-ui/dist/style/components/input.scss" // 按需引入
 import './style.less'
 
-export default class Login extends Component {
+export default class Index extends Component {
 
   constructor() {
     super(...arguments)
     this.state = {
       username: '',
       password: '',
+      phone: ''
     }
   }
 
-  handleUserNameChange(username) {
+  handleUserNameChange(value) {
     this.setState({
-      username: username
+      username: value
     })
-    // // 在小程序中，如果想改变 value 的值，需要 `return value` 从而改变输入框的当前值
-    // return value
   }
 
-  handlePasswordChange(password) {
+  handlePasswordChange(value) {
     this.setState({
-      password: password
+      password: value
+    })
+
+  }
+
+  handlePhoneChange(value) {
+    this.setState({
+      phone: value
     })
 
   }
 
   handleClick() {
+    var storageSync = Taro.getStorageSync('userEntity');
+
+    let localUserName = storageSync.username
+    let localPhone = storageSync.phone
+
+
     var password = this.state.password
     var username = this.state.username
+    var phone = this.state.phone
 
+    if (localPhone != phone) {
+      Taro.showToast({title: "手机号不对",icon: 'none'})
+      return;
+    }
+
+    if (localUserName != username) {
+      Taro.showToast({title: "用户名不对",icon: 'none'})
+      return
+    }
 
     if (username.length < 6 || password.length < 6) {
       Taro.showToast({
@@ -43,34 +64,31 @@ export default class Login extends Component {
         title: '账号或密码长度不正确'
       })
     } else {
-      Bmob.User.login(username, password).then(res => {
-        console.log(res)
-
+      const query = Bmob.Query('_User');
+      query.set("id", storageSync.objectId)
+      query.set("password", password)
+      query.save().then(res => {
         Taro.showLoading({
-          title: '登录中...',
+          title: '更新中...',
         })
         setTimeout(function () {
           Taro.hideLoading()
           Taro.redirectTo({
-            url: '/pages/tab/main'
+            url: '/pages/login/login'
           })
         }, 2000)
-        Taro.setStorageSync('userEntity',res)
-
+        Taro.removeStorageSync("userEntity")
       }).catch(err => {
-        Taro.showToast({
-          icon: 'none',
-          title: err.error
-        })
+        Taro.showToast({title: "修改失败"})
         console.log(err)
-      });
+      })
     }
 
   }
 
   render() {
     return (
-      <View className='login-root'>
+      <View className='reset-password-root'>
 
         <AtInput
           id='username'
@@ -84,17 +102,24 @@ export default class Login extends Component {
         <AtInput
           id='password'
           name='password'
-          title='密码'
+          title='新密码'
           type='password'
-          placeholder='请输入密码'
+          placeholder='请输入新密码'
           value={this.state.password}
           onChange={this.handlePasswordChange.bind(this)}
         />
-        <Text id='btn-login' onClick={() => this.handleClick()}>登 录</Text>
+        <AtInput
+          id='phone'
+          name='phone'
+          title='手机号'
+          type='text'
+          placeholder='请输入手机号'
+          value={this.state.phone}
+          onChange={this.handlePhoneChange.bind(this)}
+        />
 
-        <Text id='btn-go-register' onClick={() => {
-          Taro.navigateTo({url: '/pages/register/index'})
-        }}>去注册？</Text>
+        <View id='empty-view'/>
+        <AtButton type='primary' onClick={() => this.handleClick()}>修改密码</AtButton>
       </View>
     )
   }
