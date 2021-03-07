@@ -64,7 +64,7 @@ export default class Index extends Component {
         title: '账号或密码长度不正确'
       })
     } else {
-      const query = Bmob.Query('_User');
+      const query = window.bmob.Query('_User');
       query.set("id", storageSync.objectId)
       query.set("password", password)
       query.save().then(res => {

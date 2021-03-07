@@ -77,7 +77,7 @@ export default class Data extends Component {
 
   handleClick() {
 
-    var number = parseInt(this.state.number)
+    var number = parseFloat(this.state.number)
     var moneyType = this.state.moneyType
     var costType = this.state.costType
     var desc = this.state.desc
@@ -90,7 +90,7 @@ export default class Data extends Component {
       })
     } else {
 
-      let query = Bmob.Query('CostEntity');
+      let query = window.bmob.Query('CostEntity');
       query.set("number", number)
       query.set("moneyType", moneyType)
       query.set("costType", costType)

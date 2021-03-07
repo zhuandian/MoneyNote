@@ -43,7 +43,7 @@ export default class Login extends Component {
         title: '账号或密码长度不正确'
       })
     } else {
-      Bmob.User.login(username, password).then(res => {
+      window.bmob.User.login(username, password).then(res => {
         console.log(res)
 
         Taro.showLoading({

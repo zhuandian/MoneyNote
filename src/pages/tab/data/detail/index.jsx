@@ -59,7 +59,7 @@ export default class Detail extends Component {
     let id = getCurrentInstance().router.params.id
 
     console.log(id)
-    let query = Bmob.Query('CostEntity');
+    let query = window.bmob.Query('CostEntity');
     query.get(id).then(res => {
       this.setState({
         costEntity: res
@@ -171,7 +171,7 @@ export default class Detail extends Component {
   }
 
   onDeleteEntity(objectId) {
-    const query = Bmob.Query('CostEntity');
+    const query = window.bmob.Query('CostEntity');
     query.destroy(objectId).then(res => {
       Taro.showLoading({
         title: '删除成功...',
@@ -188,7 +188,7 @@ export default class Detail extends Component {
     let billCountNumber = document.getElementById('bill-count-number').value
     let billDesc = document.getElementById('bill-desc').value
 
-    const query = Bmob.Query('CostEntity');
+    const query = window.bmob.Query('CostEntity');
     query.set('id', costEntity.objectId) //需要修改的objectId
     query.set('number', parseInt(billCountNumber))
     query.set('desc', billDesc)

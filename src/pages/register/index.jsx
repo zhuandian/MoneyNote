@@ -55,7 +55,7 @@ export default class Register extends Component {
         title: '账号或密码长度不正确'
       })
     } else {
-      Bmob.User.register(params).then(res => {
+      window.bmob.User.register(params).then(res => {
         // console.log(res)
         Taro.showToast({
           icon: 'none',

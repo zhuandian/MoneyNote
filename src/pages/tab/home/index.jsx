@@ -65,7 +65,7 @@ export default class Home extends Component {
 
   initDate() {
     let date = this.state.currentMonth
-    let query = Bmob.Query('CostEntity');
+    let query = window.bmob.Query('CostEntity');
     query.order('-createdAt');
     query.find().then(res => {
       let temp = res.filter(item => parseInt(item.createdAt.split(" ")[0].split('-')[1]) == date.getMonth() + 1)
@@ -99,7 +99,7 @@ export default class Home extends Component {
   onTypeChange(data) {
     this.setState({costType: data[0], showTypeDialog: false})
     let date = this.state.currentMonth
-    let query = Bmob.Query('CostEntity');
+    let query = window.bmob.Query('CostEntity');
     query.order('-createdAt');
     query.equalTo("costType", "==", data[0]);
     query.find().then(res => {
@@ -185,8 +185,6 @@ export default class Home extends Component {
     Taro.navigateTo({
       url: '/pages/tab/data/detail/index?id=' + item.objectId
     })
-
-
   }
 
   getImgType(costType) {

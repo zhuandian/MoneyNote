@@ -28,7 +28,7 @@ export default class Index extends Component {
   handleClick() {
     let desc = this.state.desc;
     var storageSync = Taro.getStorageSync('userEntity');
-    const query = Bmob.Query('FeedBack');
+    const query = window.bmob.Query('FeedBack');
     query.set("desc",desc)
     query.set("userId",storageSync.objectId)
     query.set("userName",storageSync.username)
