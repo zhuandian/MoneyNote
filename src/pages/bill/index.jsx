@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {View, Text, Image, Picker} from '@tarojs/components'
 import './index.less'
-// import {Pie} from '@ant-design/charts';
+import {Pie} from '@ant-design/charts';
 import baoxiao_select from "../../image/baoxiao_select.png";
 import gongzi_select from "../../image/gongzi_select.png";
 import hongbao_select from "../../image/hongbao_select.png";
@@ -301,8 +301,9 @@ export default class Index extends Component {
           </Picker>
         </View>
         <View className='pie-view'>
-          {/*<Pie {...pieConfig} />*/}
-
+          <Pie {...pieConfig} />
+          https://blog.csdn.net/weixin_43698451/article/details/107387905
+          https://www.codercto.com/a/53489.html
         </View>
 
 
