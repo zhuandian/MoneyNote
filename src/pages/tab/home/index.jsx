@@ -1,7 +1,6 @@
 import Taro from '@tarojs/taro'
 import React, {Component} from 'react'
-import {Text, View, Image} from "@tarojs/components";
-import {DatePicker, Picker} from 'antd-mobile';
+import {Text, View, Image, Picker} from "@tarojs/components";
 import "taro-ui/dist/style/components/action-sheet.scss";
 import './style.less'
 import baoxiao_select from "../../../image/baoxiao_select.png";
@@ -43,11 +42,10 @@ export default class Home extends Component {
     this.state = {
       costType: 0,
       costArray: [],
-      currentMonth: new Date(),
+      dateValue: "2021-3",
       shouru: 0,
       zhichu: 0,
-      showTypeDialog: false,
-      showDatePicker: false
+      typePickerArray: []
     }
   }
 
@@ -58,18 +56,25 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
+
+    let typePickerArray = []
+    for (let i = 0; i < typeList.length; i++) {
+      typePickerArray.push(typeList[i].label)
+    }
+
+    this.setState({typePickerArray: typePickerArray})
     this.initDate();
   }
 
 
   initDate() {
     var storageSync = Taro.getStorageSync('userEntity');
-    let date = this.state.currentMonth
+    let date = this.state.dateValue
     let query = window.bmob.Query('CostEntity');
     query.order('-createdAt');
     query.equalTo("userId", "==", storageSync.objectId);
     query.find().then(res => {
-      let temp = res.filter(item => parseInt(item.createdAt.split(" ")[0].split('-')[1]) == date.getMonth() + 1)
+      let temp = res.filter(item => parseInt(item.createdAt.split(" ")[0].split('-')[1]) == (date.split("-")[1]))
 
       let zhichu = 0;
       let shouru = 0;
@@ -93,22 +98,22 @@ export default class Home extends Component {
 
 
   async onDateChange(date) {
-    await this.setState({currentMonth: date, showDatePicker: false})
+    await this.setState({dateValue: date.detail.value})
     this.initDate()
   }
 
   onTypeChange(data) {
     var storageSync = Taro.getStorageSync('userEntity');
-    this.setState({costType: data[0], showTypeDialog: false})
-    let date = this.state.currentMonth
+    this.setState({costType: data, showTypeDialog: false})
+    let date = this.state.dateValue
     let query = window.bmob.Query('CostEntity');
     query.order('-createdAt');
-    query.equalTo("costType", "==", data[0]);
+    query.equalTo("costType", "==", data);
     query.equalTo("userId", "==", storageSync.objectId);
     query.find().then(res => {
 
       // if (res.length == 0) return;
-      let temp = res.filter(item => parseInt(item.createdAt.split(" ")[0].split('-')[1]) == date.getMonth() + 1)
+      let temp = res.filter(item => parseInt(item.createdAt.split(" ")[0].split('-')[1]) == (date.split("-")[1]))
 
       let zhichu = 0;
       let shouru = 0;
@@ -275,25 +280,26 @@ export default class Home extends Component {
 
   render() {
 
-    let {costArray, showTypeDialog, currentMonth, costType, shouru, zhichu} = this.state
+    let {costArray, dateValue, costType, shouru, zhichu} = this.state
 
     return (
-      <View id='home-root'>
+      <View className='home-root'>
 
-        <View id='home-top-view'>
-          <View id='bill-type' onClick={() => this.setState({showTypeDialog: true})}>
-            <Text>{typeList[costType].label}</Text>
-            <Text>▼</Text>
-          </View>
-
-          <View id='bill-data'>
-            <View className='top-item' onClick={() => {
-              this.setState({showDatePicker: true})
-            }}>
-              <Text>{currentMonth.getFullYear()}</Text>
+        <View className='home-top-view'>
+          <Picker mode='selector' onChange={e=>this.onTypeChange(e.detail.value)} range={this.state.typePickerArray}>
+            <View className='bill-type'>
+              <Text>{typeList[costType].label}</Text>
               <Text>▼</Text>
-              <Text>{currentMonth.getMonth() + 1}月</Text>
             </View>
+          </Picker>
+          <View className='bill-data'>
+            <Picker mode='date' onChange={date => this.onDateChange(date)} fields='month'>
+              <View className='top-item'>
+                <Text>{dateValue.split("-")[0]}</Text>
+                <Text>▼</Text>
+                <Text>{dateValue.split("-")[1]}月</Text>
+              </View>
+            </Picker>
             <View className='top-item'>
               <Text>月支出</Text>
               <Text>{zhichu}</Text>
@@ -312,21 +318,21 @@ export default class Home extends Component {
         {
           (costArray || []).map((array, index) => {
             return <View>
-              <View id='view-item-tilte'>
+              <View className='view-item-tilte'>
                 <Text>{array[0].createdAt.split(" ")[0]}</Text>
                 <Text>{this.getMonthMoneyInfo(array)}</Text>
               </View>
               {
                 (array || []).map((item, index) => {
-                  return <View id='view-shouru' onClick={() => this.goDetailPage(item)}>
-                    <View id='item-content-view'>
-                      <Image id='shouru-item-icon' src={this.getImgType(item.costType)}/>
-                      <Text id='home-item-title'>{this.getCostType(item.costType)}</Text>
+                  return <View className='view-shouru' onClick={() => this.goDetailPage(item)}>
+                    <View className='item-content-view'>
+                      <Image className='shouru-item-icon' src={this.getImgType(item.costType)}/>
+                      <Text className='home-item-title'>{this.getCostType(item.costType)}</Text>
                       <Text
-                        id={item.moneyType == 0 ? 'item-money-count-shouru' : 'item-money-count-zhichu'}>{item.number}</Text>
+                        className={item.moneyType == 0 ? 'item-money-count-shouru' : 'item-money-count-zhichu'}>{item.number}</Text>
                     </View>
 
-                    <View id='item-bottom-view'/>
+                    <View className='item-bottom-view'/>
 
                   </View>
                 })
@@ -334,24 +340,6 @@ export default class Home extends Component {
             </View>
           })
         }
-
-
-        <Picker
-          data={typeList}
-          visible={showTypeDialog}
-          cols={1}
-          onOk={data => this.onTypeChange(data)}
-          onDismiss={() => this.setState({showTypeDialog: false})}
-        />
-
-
-        <DatePicker
-          visible={this.state.showDatePicker}
-          mode="month"
-          value={this.state.currentMonth}
-          onOk={date => this.onDateChange(date)}
-          onDismiss={() => this.setState({showDatePicker: false})}
-        />
 
       </View>
 

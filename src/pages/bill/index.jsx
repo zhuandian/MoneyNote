@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import {View, Text, Image} from '@tarojs/components'
+import {View, Text, Image, Picker} from '@tarojs/components'
 import './index.less'
-import {Pie} from '@ant-design/charts';
+import Pie from '@ant-design/charts/lib/pie';
 import baoxiao_select from "../../image/baoxiao_select.png";
 import gongzi_select from "../../image/gongzi_select.png";
 import hongbao_select from "../../image/hongbao_select.png";
@@ -16,8 +16,9 @@ import yiban1_select from "../../image/yiban_1_select.png";
 import yongcan_select from "../../image/yongcanqu_select.png";
 import yule_select from "../../image/yule_select.png";
 import ziyuan_select from "../../image/ziyuan_select.png";
-import {DatePicker} from "antd-mobile/lib";
 import Taro from "@tarojs/taro";
+
+
 
 const typeList = [
   {"label": "其他(支出)", "value": 0},
@@ -46,7 +47,7 @@ export default class Index extends Component {
       costType: 0,
       moneyType: 0,
       costArray: [],
-      currentMonth: new Date(),
+      dateValue: "2021-3",
       shouru: 0,
       zhichu: 0,
       showTypeDialog: false,
@@ -209,20 +210,20 @@ export default class Index extends Component {
 
 
   async onDateChange(date) {
-    await this.setState({currentMonth: date, showDatePicker: false})
+    await this.setState({dateValue: date.detail.value})
     this.initDate()
   }
 
 
   initDate() {
-    let date = this.state.currentMonth
+    let date = this.state.dateValue
     var storageSync = Taro.getStorageSync('userEntity');
     let query = window.bmob.Query('CostEntity');
     query.order('-createdAt');
     query.equalTo("moneyType", "==", this.state.moneyType);
     query.equalTo("userId", "==", storageSync.objectId);
     query.find().then(res => {
-      let temp = res.filter(item => parseInt(item.createdAt.split(" ")[0].split('-')[1]) == date.getMonth() + 1)
+      let temp = res.filter(item => parseInt(item.createdAt.split(" ")[0].split('-')[1]) == (date.split("-")[1]))
 
       let zhichu = 0;
       let shouru = 0;
@@ -283,26 +284,29 @@ export default class Index extends Component {
     return Object.keys(groups).map(group => groups[group])
   }
 
+
+
   render() {
 
-    let {pieConfig, currentMonth, costArray, moneyType} = this.state
+    let {pieConfig, dateValue, costArray, moneyType} = this.state
     return (
       <View className='bill-root'>
         <View className='bill-top-view'>
-          <View id='money-type'>
+          <View className='money-type'>
             <Text className={moneyType == 1 ? "selected" : "normal"} onClick={() => this.onMoneyTypeChange(1)}>收入</Text>
             <Text className={moneyType == 0 ? "selected" : "normal"} onClick={() => this.onMoneyTypeChange(0)}>支出</Text>
           </View>
-          <Text id='time' onClick={() => {
-            this.setState({showDatePicker: true})
-          }}>{currentMonth.getFullYear() + "-" + (parseInt(currentMonth.getMonth() + 1))}</Text>
+          <Picker mode='date' onChange={date => this.onDateChange(date)} fields='month'>
+          <Text className='time' >{dateValue.split("-")[0] + "-" + dateValue.split("-")[1]}</Text>
+          </Picker>
         </View>
-        <View id='pie-view'>
+        <View className='pie-view'>
           <Pie {...pieConfig} />
+
         </View>
 
 
-        <Text id='rank-title'>{currentMonth.getMonth() + 1}月份{moneyType == 1 ? "收入" : "支出"}排行榜</Text>
+        <Text className='rank-title'>{dateValue.split("-")[1]}月份{moneyType == 1 ? "收入" : "支出"}排行榜</Text>
         {
           (costArray || []).map((item, index) => {
             return <View className='view-shouru' onClick={() => this.goDetailPage(item)}>
@@ -317,21 +321,12 @@ export default class Index extends Component {
             </View>
           })
         }
-
-
-        <DatePicker
-          visible={this.state.showDatePicker}
-          mode="month"
-          value={this.state.currentMonth}
-          onOk={date => this.onDateChange(date)}
-          onDismiss={() => this.setState({showDatePicker: false})}
-        />
       </View>
     )
   }
 
-  onMoneyTypeChange(type) {
-    this.setState({moneyType: type})
+  async onMoneyTypeChange(type) {
+    await this.setState({moneyType: type})
     this.initDate()
   }
 }
