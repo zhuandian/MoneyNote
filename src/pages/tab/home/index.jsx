@@ -79,7 +79,7 @@ export default class Home extends Component {
     query.order('-createdAt');
     query.equalTo("userId", "==", storageSync.objectId);
     query.find().then(res => {
-      let temp = res.filter(item => parseInt(item.createdAt.split(" ")[0].split('-')[1]) == (date.split("-")[1]))
+      let temp = res.filter(item => (parseInt(item.createdAt.split(" ")[0].split('-')[1]) == (date.split("-")[1]))&&parseInt(item.createdAt.split(" ")[0].split('-')[0]) == (date.split("-")[0]))
 
       let zhichu = 0;
       let shouru = 0;
@@ -122,7 +122,7 @@ export default class Home extends Component {
     query.find().then(res => {
 
       // if (res.length == 0) return;
-      let temp = res.filter(item => parseInt(item.createdAt.split(" ")[0].split('-')[1]) == (date.split("-")[1]))
+      let temp = res.filter(item => (parseInt(item.createdAt.split(" ")[0].split('-')[1]) == (date.split("-")[1]))&&parseInt(item.createdAt.split(" ")[0].split('-')[0]) == (date.split("-")[0]))
 
       let zhichu = 0;
       let shouru = 0;
