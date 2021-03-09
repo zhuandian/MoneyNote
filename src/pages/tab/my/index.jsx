@@ -37,7 +37,9 @@ export default class My extends Component {
           <Text> > </Text>
         </View>
 
-        <Text id='btn-logout'>注销登录</Text>
+        <Text id='btn-logout' onClick={()=>Taro.navigateTo({
+          url:'/pages/login/login'
+        })}>注销登录</Text>
       </View>
     )
   }
