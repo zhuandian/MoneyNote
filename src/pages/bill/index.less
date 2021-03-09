@@ -2,99 +2,116 @@
   display: flex;
   background: white;
   flex-direction: column;
-  height: 100vh;
+  //height: 100vh;
 
-  .bill-top-view {
-    background: dodgerblue;
+  .top-view {
+
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    color: white;
-    font-size: 0.7rem;
-    padding-top: 80px;
-    padding-bottom: 20px;
+    flex-direction: column;
+    height: 600px;
 
-    .money-type {
-      border: 1px solid black;
-      font-size: 0.6rem;
+    .bill-top-view {
+      background: dodgerblue;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      color: white;
+      font-size: 0.7rem;
+      padding-top: 80px;
+      padding-bottom: 20px;
 
-      .selected {
-        padding: 10px 20px;
-        background: black;
+      .money-type {
+        border: 1px solid black;
+        font-size: 0.6rem;
+
+        .selected {
+          padding: 10px 20px;
+          background: black;
+        }
+
+        .normal {
+          padding: 10px 20px;
+        }
       }
 
-      .normal {
-        padding: 10px 20px;
+      .time {
+        padding: 0px 20px;
+        border: 1px solid black;
+        font-size: 0.6rem;
       }
     }
 
-    .time {
-      padding: 0px 20px;
-      border: 1px solid black;
-      font-size: 0.6rem;
+
+    .pie-view {
+      margin-top: 30px;
+      height: 450px;
+
+      #f2-canvas {
+        position: relative;
+        z-index: 999;
+      }
     }
-  }
-
-
-  .pie-view {
-    margin-top: 30px;
-    height: 450px;
   }
 
 
   .rank-title {
-
     background: #F6F6F6;
     padding: 30px;
   }
 
-
-  .view-shouru {
+  .bottom-view {
     display: flex;
-    background: white;
-    height: 120px;
     flex-direction: column;
-    font-size: 0.6rem;
+    height: 500px;
+    overflow-y: scroll;
 
-    .item-content-view {
+    .view-shouru {
       display: flex;
-      flex-direction: row;
-      align-items: center;
+      background: white;
+      height: 120px;
+      flex-direction: column;
+      font-size: 0.6rem;
+      .item-content-view {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
 
 
-      .shouru-item-icon {
-        margin-left: 20px;
-        margin-right: 20px;
-        width: 50px;
-        height: 50px;
+        .shouru-item-icon {
+          margin-left: 20px;
+          margin-right: 20px;
+          width: 50px;
+          height: 50px;
+        }
+
+        .home-item-title {
+          line-height: 115px;
+          font-size: 0.6rem;
+          margin-left: 30px;
+        }
+
+        .item-money-count-shouru {
+          color: dodgerblue;
+          margin-right: 20px;
+          margin-left: auto;
+        }
+
+        .item-money-count-zhichu {
+          margin-right: 20px;
+          margin-left: auto;
+        }
+
       }
 
-      .home-item-title {
-        line-height: 115px;
-        font-size: 0.6rem;
-        margin-left: 30px;
+
+      .item-bottom-view {
+        height: 1px;
+        margin-left: 120px;
+        background: #e3e3e3;
       }
-
-      .item-money-count-shouru {
-        color: dodgerblue;
-        margin-right: 20px;
-        margin-left: auto;
-      }
-
-      .item-money-count-zhichu {
-        margin-right: 20px;
-        margin-left: auto;
-      }
-
-    }
-
-
-    .item-bottom-view {
-      height: 1px;
-      margin-left: 120px;
-      background: #e3e3e3;
     }
   }
+
 
 }
 

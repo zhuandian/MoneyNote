@@ -183,9 +183,8 @@ export default class Data extends Component {
                 <Image id='meun-img' src={costType == 5 ? yule_select : yule}></Image>
                 <Text className={costType == 5 ? 'type-item-selected' : 'type-item-normal'}>娱乐</Text>
               </View>
-              <View className='item-view'>
-                <Image id='meun-img' src={costType == 6 ? lvyou_select : lvyou}
-                       onClick={() => this.onCostTypeSelected(6)}></Image>
+              <View className='item-view' onClick={() => this.onCostTypeSelected(6)}>
+                <Image id='meun-img' src={costType == 6 ? lvyou_select : lvyou} ></Image>
                 <Text className={costType == 6 ? 'type-item-selected' : 'type-item-normal'}>旅游</Text>
               </View>
               <View className='item-view' onClick={() => this.onCostTypeSelected(7)}>

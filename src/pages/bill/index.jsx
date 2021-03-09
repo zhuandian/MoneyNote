@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, Image, Picker} from '@tarojs/components'
 import './index.less'
-import {Pie} from '@ant-design/charts';
 import baoxiao_select from "../../image/baoxiao_select.png";
 import gongzi_select from "../../image/gongzi_select.png";
 import hongbao_select from "../../image/hongbao_select.png";
@@ -18,7 +17,9 @@ import yule_select from "../../image/yule_select.png";
 import ziyuan_select from "../../image/ziyuan_select.png";
 import Taro from "@tarojs/taro";
 
+import F2Canvas from '../../components/F2Canvas/F2Canvas'
 
+import F2 from "@antv/f2/lib/index-all";
 
 const typeList = [
   {"label": "其他(支出)", "value": 0},
@@ -38,6 +39,8 @@ const typeList = [
   {"label": "其他(收入)", "value": 14}
 ]
 
+
+var chartMy = null
 export default class Index extends Component {
 
 
@@ -52,38 +55,12 @@ export default class Index extends Component {
       zhichu: 0,
       showTypeDialog: false,
       showDatePicker: false,
-      pieConfig: {
-        appendPadding: 10,
-        data: [],
-        angleField: 'value',
-        colorField: 'type',
-        radius: 1,
-        innerRadius: 0.5,
-        label: {
-          type: 'inner',
-          offset: '-50%',
-          content: '{value}',
-          style: {
-            textAlign: 'center',
-            fontSize: 14,
-          },
-        },
-        interactions: [{type: 'element-selected'}, {type: 'element-active'}],
-        statistic: {
-          title: false,
-          content: {
-            style: {
-              whiteSpace: 'pre-wrap',
-              overflow: 'hidden',
-              fontSize: 15,
-              textOverflow: 'ellipsis',
-            },
-            formatter: function formatter() {
-              return '账单\n统计';
-            },
-          },
-        },
-      }
+      pieData: [{
+        const: 'const',
+        type: '其他',
+        money: 51.39
+      }]
+      ,
     }
   }
 
@@ -193,21 +170,6 @@ export default class Index extends Component {
     return typeInfo
   }
 
-  componentDidMount() {
-    let config = this.state.pieConfig
-    config.data = [
-      {
-        type: '其他',
-        value: 5,
-      },
-    ]
-
-    this.setState({
-      pieConfig: config
-    })
-    this.initDate()
-  }
-
 
   async onDateChange(date) {
     await this.setState({dateValue: date.detail.value})
@@ -217,12 +179,13 @@ export default class Index extends Component {
 
   initDate() {
     let date = this.state.dateValue
+
     var storageSync = Taro.getStorageSync('userEntity');
     let query = window.bmob.Query('CostEntity');
     query.order('-createdAt');
     query.equalTo("moneyType", "==", this.state.moneyType);
     query.equalTo("userId", "==", storageSync.objectId);
-    query.find().then(res => {
+    query.find().then(async res => {
       let temp = res.filter(item => parseInt(item.createdAt.split(" ")[0].split('-')[1]) == (date.split("-")[1]))
 
       let zhichu = 0;
@@ -238,35 +201,31 @@ export default class Index extends Component {
 
       console.log(grouped)
 
+
       let pieData = [];
-      for (let i=0;i<grouped.length;i++){
+      for (let i = 0; i < grouped.length; i++) {
         let totalCount = 0;
-        for (let j=0;j<grouped[i].length;j++){
+        for (let j = 0; j < grouped[i].length; j++) {
           if (grouped[i][j].moneyType == this.state.moneyType) {
-            totalCount+=grouped[i][j].number
+            totalCount += grouped[i][j].number
           }
         }
         pieData.push(
           {
+            const: "const",
             type: this.getCostType(grouped[i][0].costType),
-            value: totalCount,
+            money: totalCount,
           }
         )
       }
 
+      chartMy.changeData(pieData)
 
-
-      let config = this.state.pieConfig
-      config.data = pieData
-
-      this.setState({
-        pieConfig: config
-      })
 
       this.setState({
         costArray: temp,
         shouru: shouru,
-        zhichu: zhichu
+        zhichu: zhichu,
       })
     });
   }
@@ -284,44 +243,98 @@ export default class Index extends Component {
     return Object.keys(groups).map(group => groups[group])
   }
 
+  onInitPie(config) {
+
+    const chart = new F2.Chart(config);
+    const data = this.state.pieData;
+    chart.source(data);
+    chart.coord('polar', {
+      transposed: true,
+      radius: 0.9,
+      innerRadius: 0.5
+    });
+    chart.axis(false);
+    chart.legend(false);
+    chart.tooltip(false);
+    chart.interval()
+      .position('const*money')
+      .adjust('stack')
+      .color('type', ['#1890FF', '#13C2C2', '#2FC25B', '#FACC14']);
+    chart.interval()
+      .position('const*money')
+      .adjust('stack')
+      .color('type', ['#1890FF', '#13C2C2', '#2FC25B', '#FACC14']);
+    chart.pieLabel({
+      sidePadding: 30,
+      activeShape: true,
+      label1: function label1(data) {
+        return {
+          text: '￥' + data.money,
+          fill: '#343434',
+          fontWeight: 'bold'
+        };
+      },
+      label2: function label2(data) {
+        return {
+          text: data.type,
+          fill: '#999'
+        };
+      },
+    });
+    chart.render();
+    chartMy = chart
+    this.initDate()
+    return chart
+  }
 
 
   render() {
 
-    let {pieConfig, dateValue, costArray, moneyType} = this.state
+    let {dateValue, costArray, moneyType} = this.state
     return (
       <View className='bill-root'>
-        <View className='bill-top-view'>
-          <View className='money-type'>
-            <Text className={moneyType == 1 ? "selected" : "normal"} onClick={() => this.onMoneyTypeChange(1)}>收入</Text>
-            <Text className={moneyType == 0 ? "selected" : "normal"} onClick={() => this.onMoneyTypeChange(0)}>支出</Text>
-          </View>
-          <Picker mode='date' onChange={date => this.onDateChange(date)} fields='month'>
-          <Text className='time' >{dateValue.split("-")[0] + "-" + dateValue.split("-")[1]}</Text>
-          </Picker>
-        </View>
-        <View className='pie-view'>
-          <Pie {...pieConfig} />
-          https://blog.csdn.net/weixin_43698451/article/details/107387905
-          https://www.codercto.com/a/53489.html
-        </View>
 
+        <View className='top-view'>
 
-        <Text className='rank-title'>{dateValue.split("-")[1]}月份{moneyType == 1 ? "收入" : "支出"}排行榜</Text>
-        {
-          (costArray || []).map((item, index) => {
-            return <View className='view-shouru' onClick={() => this.goDetailPage(item)}>
-              <View className='item-content-view'>
-                <Image className='shouru-item-icon' src={this.getImgType(item.costType)}/>
-                <Text className='home-item-title'>{this.getCostType(item.costType)}</Text>
-                <Text>{item.number}</Text>
-              </View>
-
-              <View className='item-bottom-view'></View>
-
+          <View className='bill-top-view'>
+            <View className='money-type'>
+              <Text className={moneyType == 1 ? "selected" : "normal"}
+                    onClick={() => this.onMoneyTypeChange(1)}>收入</Text>
+              <Text className={moneyType == 0 ? "selected" : "normal"}
+                    onClick={() => this.onMoneyTypeChange(0)}>支出</Text>
             </View>
-          })
-        }
+            <Picker mode='date' onChange={date => this.onDateChange(date)} fields='month'>
+              <Text className='time'>{dateValue.split("-")[0] + "-" + dateValue.split("-")[1]}</Text>
+            </Picker>
+          </View>
+
+          <View className='pie-view'>
+            <F2Canvas
+              id='f2-canvas'
+              style="width: 100%; height: 200px;"
+              onInit={this.onInitPie.bind(this)}
+            />
+          </View>
+        </View>
+
+        <Text className='rank-title'>{dateValue.split("-")[1]}月份{moneyType == 1 ? "收入" : "支出"}列表明细</Text>
+
+        <View className='bottom-view'>
+          {
+            (costArray || []).map((item, index) => {
+              return <View className='view-shouru'>
+                <View className='item-content-view'>
+                  <Image className='shouru-item-icon' src={this.getImgType(item.costType)}/>
+                  <Text className='home-item-title'>{this.getCostType(item.costType)}</Text>
+                  <Text>{item.number}</Text>
+                </View>
+
+                <View className='item-bottom-view'></View>
+
+              </View>
+            })
+          }
+        </View>
       </View>
     )
   }
