@@ -285,7 +285,7 @@ export default class Home extends Component {
       }
     }
 
-    return "收入" + shouru + " " + "支出" + zhichu
+    return "收入" + shouru.toFixed(2) + " " + "支出" + zhichu.toFixed(2)
   }
 
 
@@ -313,15 +313,15 @@ export default class Home extends Component {
             </Picker>
             <View className='top-item'>
               <Text>月支出</Text>
-              <Text>{zhichu}</Text>
+              <Text>{zhichu.toFixed(2)}</Text>
             </View>
             <View className='top-item'>
               <Text>月收入</Text>
-              <Text>{shouru}</Text>
+              <Text>{shouru.toFixed(2)}</Text>
             </View>
             <View className='top-item'>
               <Text>结余</Text>
-              <Text>{shouru - zhichu}</Text>
+              <Text>{(shouru - zhichu).toFixed(2)}</Text>
             </View>
 
           </View>
@@ -340,7 +340,7 @@ export default class Home extends Component {
                       <Image className='shouru-item-icon' src={this.getImgType(item.costType)}/>
                       <Text className='home-item-title'>{this.getCostType(item.costType)}</Text>
                       <Text
-                        className={item.moneyType == 0 ? 'item-money-count-shouru' : 'item-money-count-zhichu'}>{item.number}</Text>
+                        className={item.moneyType == 0 ? 'item-money-count-shouru' : 'item-money-count-zhichu'}>{item.number.toFixed(2)}</Text>
                     </View>
 
                     <View className='item-bottom-view'/>

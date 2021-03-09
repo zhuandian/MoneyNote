@@ -56,6 +56,12 @@ export default class Detail extends Component {
   componentDidMount() {
 
 
+    this.initData();
+
+
+  }
+
+  initData() {
     let id = getCurrentInstance().router.params.id
 
     console.log(id)
@@ -67,8 +73,6 @@ export default class Detail extends Component {
     }).catch(err => {
       console.log(err)
     })
-
-
   }
 
   getImgType(costType) {
@@ -139,7 +143,8 @@ export default class Detail extends Component {
           <View className='item-bottom-view'/>
           <View className='item-content-view'>
             <Text id='item-info'>金额 ：</Text>
-            <Input id='bill-count-number' className='item-input' value={costEntity.number} disabled={isEditMode}/>
+            <Input id='bill-count-number' className='item-input' value={costEntity.number.toFixed(2)}
+                   disabled={isEditMode}/>
           </View>
           <View className='item-bottom-view'/>
 
@@ -183,6 +188,7 @@ export default class Detail extends Component {
       Taro.showLoading({
         title: '删除成功...',
       })
+      Taro.eventCenter.trigger('loadNewData', 1111)
       Taro.navigateBack()
     }).catch(err => {
       Taro.showToast({
@@ -197,14 +203,14 @@ export default class Detail extends Component {
 
     const query = window.bmob.Query('CostEntity');
     query.set('id', costEntity.objectId) //需要修改的objectId
-    query.set('number', parseInt(billCountNumber))
+    query.set('number', parseFloat(billCountNumber))
     query.set('desc', billDesc)
     query.save().then(res => {
       Taro.eventCenter.trigger('loadNewData', 1111)
       Taro.showToast({
         title: '修改成功...',
       })
-
+      this.initData();
       this.setState({isEditMode: true})
     }).catch(err => {
       Taro.showToast({
