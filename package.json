@@ -37,7 +37,6 @@
   "dependencies": {
     "@antv/f2": "^3.8.1",
     "@antv/f2-context": "^0.0.1",
-    "@ant-design/charts": "^1.0.3",
     "@babel/runtime": "^7.7.7",
     "@stylelint/postcss-css-in-js": "^0.37.2",
     "@stylelint/postcss-markdown": "^0.36.2",

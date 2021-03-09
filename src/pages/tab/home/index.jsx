@@ -42,7 +42,7 @@ export default class Home extends Component {
   constructor() {
     super(...arguments)
     this.state = {
-      costType: 0,
+      costType: 15,
       costArray: [],
       dateValue: "2021-3",
       shouru: 0,
@@ -108,13 +108,15 @@ export default class Home extends Component {
   }
 
   onTypeChange(data) {
+
+    console.log(data+1)
     var storageSync = Taro.getStorageSync('userEntity');
     this.setState({costType: data, showTypeDialog: false})
     let date = this.state.dateValue
     let query = window.bmob.Query('CostEntity');
     query.order('-createdAt');
     if (data != 15) {
-      query.equalTo("costType", "==", data);
+      query.equalTo("costType", "==", parseInt(data));
     }
     query.equalTo("userId", "==", storageSync.objectId);
     query.find().then(res => {
@@ -141,33 +143,32 @@ export default class Home extends Component {
     });
   }
 
-
   getCostType(type) {
     let typeInfo = "其他"
     switch (type) {
       case 0:
-        typeInfo = "学习"
+        typeInfo = "其他"
         break;
       case 1:
-        typeInfo = "一般"
+        typeInfo = "学习"
         break;
       case 2:
-        typeInfo = "用餐"
+        typeInfo = "一般"
         break;
       case 3:
-        typeInfo = "交通"
+        typeInfo = "用餐"
         break;
       case 4:
-        typeInfo = "日用品"
+        typeInfo = "交通"
         break;
       case 5:
-        typeInfo = "娱乐"
+        typeInfo = "日用品"
         break;
       case 6:
-        typeInfo = "旅游"
+        typeInfo = "娱乐"
         break;
       case 7:
-        typeInfo = "其他"
+        typeInfo = "旅游"
         break;
       case 8:
         typeInfo = "一般"
