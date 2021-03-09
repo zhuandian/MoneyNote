@@ -141,9 +141,10 @@ export default class Data extends Component {
         <AtInput
           name='value'
           title='金额'
-          type='number'
+          type='digit'
           placeholder='请输入金额'
           value={this.state.number}
+          cursor={this.state.number.length}
           onChange={this.handleNumberChange.bind(this)}
         />
         <Text className='title-data'>类型</Text>
@@ -230,6 +231,7 @@ export default class Data extends Component {
         <View id='item-space'/>
         <AtTextarea
           id='cost-desc'
+          cursor={this.state.desc.length}
           value={this.state.desc}
           onChange={this.handleDescChange.bind(this)}
           maxLength={200}

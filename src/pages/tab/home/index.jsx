@@ -18,6 +18,7 @@ import yongcan_select from "../../../image/yongcanqu_select.png";
 import yule_select from "../../../image/yule_select.png";
 import ziyuan_select from "../../../image/ziyuan_select.png";
 
+
 const typeList = [
   {"label": "其他(支出)", "value": 0},
   {"label": "学习", "value": 1},
@@ -33,7 +34,8 @@ const typeList = [
   {"label": "奖金", "value": 11},
   {"label": "投资", "value": 12},
   {"label": "报销", "value": 13},
-  {"label": "其他(收入)", "value": 14}
+  {"label": "其他(收入)", "value": 14},
+  {"label": "全部", "value": 15}
 ]
 export default class Home extends Component {
 
@@ -57,6 +59,9 @@ export default class Home extends Component {
 
   componentDidMount() {
 
+    Taro.eventCenter.on('loadNewData', (arg) => {
+      this.initDate();
+    })
     let typePickerArray = []
     for (let i = 0; i < typeList.length; i++) {
       typePickerArray.push(typeList[i].label)
@@ -108,7 +113,9 @@ export default class Home extends Component {
     let date = this.state.dateValue
     let query = window.bmob.Query('CostEntity');
     query.order('-createdAt');
-    query.equalTo("costType", "==", data);
+    if (data != 15) {
+      query.equalTo("costType", "==", data);
+    }
     query.equalTo("userId", "==", storageSync.objectId);
     query.find().then(res => {
 
@@ -183,6 +190,8 @@ export default class Home extends Component {
       case 14:
         typeInfo = "其他"
         break;
+      case 15:
+        typeInfo = "全部"
     }
 
     return typeInfo
@@ -194,6 +203,7 @@ export default class Home extends Component {
       url: '/pages/detail/index?id=' + item.objectId
     })
   }
+
 
   getImgType(costType) {
     let img = qita_select
@@ -286,7 +296,7 @@ export default class Home extends Component {
       <View className='home-root'>
 
         <View className='home-top-view'>
-          <Picker mode='selector' onChange={e=>this.onTypeChange(e.detail.value)} range={this.state.typePickerArray}>
+          <Picker mode='selector' onChange={e => this.onTypeChange(e.detail.value)} range={this.state.typePickerArray}>
             <View className='bill-type'>
               <Text>{typeList[costType].label}</Text>
               <Text>▼</Text>

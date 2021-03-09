@@ -17,3 +17,11 @@ export default {
     navigationBarTextStyle: 'black'
   }
 }
+
+
+
+
+
+
+// 修改完某一笔账单后，没有调用刷新，返回首页没有主动刷新
+

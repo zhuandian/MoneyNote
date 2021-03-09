@@ -54,6 +54,8 @@ export default class Detail extends Component {
   }
 
   componentDidMount() {
+
+
     let id = getCurrentInstance().router.params.id
 
     console.log(id)
@@ -198,6 +200,7 @@ export default class Detail extends Component {
     query.set('number', parseInt(billCountNumber))
     query.set('desc', billDesc)
     query.save().then(res => {
+      Taro.eventCenter.trigger('loadNewData', 1111)
       Taro.showToast({
         title: '修改成功...',
       })
